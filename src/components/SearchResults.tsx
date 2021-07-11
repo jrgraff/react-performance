@@ -1,4 +1,4 @@
-import React from "react"
+import { useMemo } from "react"
 import { ProductItem } from "./ProductItem"
 
 interface SearchResultsProps {
@@ -10,8 +10,21 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ results }: SearchResultsProps) {
+  const totalPrice = useMemo(() => {
+    return results.reduce((total, product) => {
+      return total + product.price
+    }, 0)
+  }, [results])
+
+  /** When to use useMemo
+   * 1. Heavy calculation
+   * 2. Referential equality (when passing information to a child component)
+   */
+
   return (
     <div>
+      <h2>{totalPrice}</h2>
+
       {results.map(product => {
         return (
           <ProductItem key={product.id} product={product} />
